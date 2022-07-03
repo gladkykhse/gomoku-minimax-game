@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "Tc/Epk5jS9lYXrJ3PQNGS84F9uyhiORZQ6OvU5HKPXzZJc1ozhBtaUY4QDCEGKMKHTA9OMjC/GwQwiQ6sHqUeQ==",
+  "success": true,
+  "projectFilePath": "/Users/svatoslavgladkih/RiderProjects/student-gladkyks/FinalProject/FinalProject.csproj",
+  "expectedPackageFiles": [
+    "/Users/svatoslavgladkih/.nuget/packages/atksharp/3.24.24.38/atksharp.3.24.24.38.nupkg.sha512",
+    "/Users/svatoslavgladkih/.nuget/packages/cairosharp/3.24.24.38/cairosharp.3.24.24.38.nupkg.sha512",
+    "/Users/svatoslavgladkih/.nuget/packages/gdksharp/3.24.24.38/gdksharp.3.24.24.38.nupkg.sha512",
+    "/Users/svatoslavgladkih/.nuget/packages/giosharp/3.24.24.38/giosharp.3.24.24.38.nupkg.sha512",
+    "/Users/svatoslavgladkih/.nuget/packages/glibsharp/3.24.24.38/glibsharp.3.24.24.38.nupkg.sha512",
+    "/Users/svatoslavgladkih/.nuget/packages/gtksharp/3.24.24.38/gtksharp.3.24.24.38.nupkg.sha512",
+    "/Users/svatoslavgladkih/.nuget/packages/pangosharp/3.24.24.38/pangosharp.3.24.24.38.nupkg.sha512"
+  ],
+  "logs": []
+}
