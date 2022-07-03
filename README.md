@@ -1,92 +1,47 @@
-# student
+# Programming II Semestral Project “Gomoku”
 
-Tady bude Váš zápočtový program
+**Introduction**
 
-## Getting started
+Gomoku is a very simple game. The aim is to build an unbroken chain of 5 stones of your color in one line (diagonal is also possible). The main difference is that here you play against the computer.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+**User Manual**
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+When the user runs the program, a 15x15 grid appears. As stated earlier, the whole aim is to build a chain of 5 stones horizontally, vertically or diagonally. The user plays against the computer and the first move goes to the user. The user is red while the computer is blue. The user can choose any cell to put in his/her red stone. After the user’s move, the computer plays back and chooses where to put its blue stone. The user plays again trying to achieve the goal of the game and then the computer plays back trying to win as well. This process is repeated until either the user or the computer manages to form a 5x5 row of cells to win the game. When the user or the computer wins, the game finishes and the 5 cells are highlighted by a line crossing through them. After that, the user can click once on any cell to restart the game.
 
-## Add your files
+**Algorithms/optimizations**
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+For this project, I used the GtkSharp library (for the graphical interface). Everything else was written using clear C# without additional libraries. I decided to use this game to study the Minimax algorithm more deeply (this is the main aim of my project). It is smart and able to control the game situation a few steps further. This algorithm allows you to make a tree of the current game situation and consider all possible moves starting from the current situation to as deep as you need. 
 
-```
-cd existing_repo
-git remote add origin https://gitlab.mff.cuni.cz/teaching/nprg031/2022-summer/common/student.git
-git branch -M master
-git push -uf origin master
-```
+The Minimax algorithm alone by itself is not efficient enough. For instance, in my game, there are 225 squares. If you consider all these steps as possible moves, you will have more than 11 million gaming situations at depth 3 and therefore the following optimizations were implemented:
+- Alpha-beta pruning
+- Limiting the number of the possible moves - the program considers possible positions by only looking at those that are near the previous moves done.
+- Checking efficiently the existence of the winner - The program does not look at the whole grid after every move, it checks if this move created a line of 5 stones in one of the 4 possible directions. This method improved the complexity from quadratic in terms of the board to linear in terms of the number of stones in a line you need to win.
+- Making UnMove() instead of copying the current game situation. - It optimizes the algorithm because we just change some properties of the game and not clone the object millions of times.
+- Evaluation function for limiting the recursion depth. - Not to explore the whole gaming tree, the program goes to some constant depth and then evaluates the current game state to optimize the algorithm speed. If any player occupies a cell, it counts the number of stones in each possible win line and depending on the number of them in one of the directions points are added to the player who created this line. - Additionally, the computer checks the outside cells of that line, if a cell contains the stone of the opponent or a cell is on the border of the gaming grid ), the counter of one player is subtracted to get the approximation of the minimax value in this game state.
 
-## Integrate with your tools
+**Code decomposition**
 
-- [ ] [Set up project integrations](https://gitlab.mff.cuni.cz/teaching/nprg031/2022-summer/common/student/-/settings/integrations)
+My code is splitted into 3 parts (classes): 
+- Program.cs - here the Main() function lies and the application starts. Also I decided to place here classes that are responsible for drawing the game on the screen (Area that implements the DrawingArea and MyWindow that implements Gtk.Window)
+- Game.cs - here we can find the single class of the game. It holds everything connected to the current game situation (grid, player, winner, etc.). Also there are lots of the game methods and methods for the Minimax algorithm (for example CheckWinner(), Move(), PossibleMoves(), UnMove(), etc.)
+- Minimax.cs - here is the Minimax class with the most important Predict() method that predicts the winner of the current game situation and returns the best possible move for the computer.
+and the  Evaluate() method to get the approximate minimax value of the current game situation.
 
-## Collaborate with your team
+**The most challenging parts**
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+During the development I met lots of difficulties such as:
+- Big number of possible moves which affected badly the speed
+- Coding efficient check-win algorithm depending on the last stone placed on the grid
+- Evaluate() method was quite difficult to implement. Several options were tried but sometimes it would not cover all the chains correctly. 
 
-## Test and Deploy
+**Future work**
 
-Use the built-in continuous integration in GitLab.
+In the near future I would like to add the following parts:
+Some more graphical interface. Such that the user will be able to choose the color he/she wants to play. Menu with two gaming modes (against the computer and with a friend)
+Continue developing the minimax algorithm and compare it to the algorithms of other developers
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+**Summary**
 
-***
+To summarize everything above mentioned, I would like to say that this project was very useful for me as I studied one very important algorithm very deeply. I was trying to optimize the algorithm as best as it was possible to get the best performance. In the end I achieved the expected result and I am fully satisfied with my work.
 
-# Editing this README
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
